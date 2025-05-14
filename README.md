@@ -94,4 +94,86 @@ with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
 Contribuindo
 Sinta-se à vontade para contribuir para este repositório, enviando um pull request com melhorias ou correções.
 
+Como Usar o Agendador de Tarefas do Windows para Agendar Execuções
+O Agendador de Tarefas do Windows permite que você execute programas ou scripts em horários específicos ou quando certos eventos ocorrerem. Aqui está um guia passo a passo com imagens para ajudá-lo a configurar o agendamento de tarefas.
+
+Passo 1: Abrir o Agendador de Tarefas
+No menu de Iniciar, digite "Agendador de Tarefas" ou "Task Scheduler".
+
+Clique em Agendador de Tarefas para abrir o programa.
+
+
+Passo 2: Criar uma Nova Tarefa
+No painel à direita, clique em Criar Tarefa.
+
+
+Passo 3: Definir as Informações Gerais
+Na aba Geral, dê um nome à tarefa e, se necessário, forneça uma descrição.
+
+Nome: Dê um nome intuitivo para a tarefa (por exemplo, "Execução do Script Python").
+
+Descrição: (opcional) Escreva uma descrição da tarefa.
+
+Se quiser que a tarefa seja executada mesmo quando o usuário não estiver logado, marque a opção Executar com privilégios mais altos.
+
+
+Passo 4: Configurar o Agendamento
+Vá até a aba Triggers (Gatilhos) e clique em Novo.
+
+
+Escolha o tipo de gatilho que você deseja:
+
+Diariamente: Se você quiser que o script seja executado todos os dias.
+
+Semanalmente: Se você quiser definir um horário fixo semanal para a execução.
+
+Ao iniciar o computador: Se você quiser que o script seja executado sempre que o computador for ligado.
+
+Configure a hora e a frequência conforme desejado e clique em OK.
+
+
+Passo 5: Definir a Ação
+Vá até a aba Ações e clique em Novo.
+
+
+No campo Ação, selecione Iniciar um programa.
+
+Clique em Procurar e selecione o script que você deseja executar (por exemplo, seu arquivo .py ou .bat).
+
+Se você estiver executando um script Python, na caixa Programa/script, insira o caminho do interpretador Python, como C:\Python39\python.exe e, no campo Adicionar argumentos, adicione o caminho do seu script Python.
+
+Exemplo:
+
+Programa/script: C:\Python39\python.exe
+
+Adicionar argumentos: C:\Caminho\para\seu_script.py
+
+Clique em OK.
+
+
+Passo 6: Configurações Avançadas (Opcional)
+Na aba Configurações, você pode ajustar a tarefa para garantir que ela seja executada corretamente, mesmo se o computador estiver em modo de economia de energia ou se a tarefa falhar.
+
+Marque a opção Parar a tarefa se ela durar mais de para limitar o tempo máximo de execução da tarefa, se necessário.
+
+Após configurar as opções desejadas, clique em OK.
+
+
+Passo 7: Finalizar e Testar
+Clique em OK para salvar a tarefa.
+
+Para testar se a tarefa está configurada corretamente, selecione a tarefa na lista e clique em Executar no painel à direita.
+
+
+Agora você configurou com sucesso uma tarefa agendada no Windows para executar automaticamente seu script Python ou outro programa na hora e data que você configurou.
+
+Dicas Finais
+Verifique se o script funciona: Antes de agendar a tarefa, sempre execute seu script manualmente para garantir que ele funcione corretamente.
+
+Verifique permissões: Certifique-se de que você tem as permissões adequadas para executar o script, especialmente se ele interagir com arquivos ou recursos do sistema.
+
+Agora, o Agendador de Tarefas irá cuidar do resto, executando o script no horário determinado!
+
+Espero que esse guia com imagens tenha sido útil! Se precisar de mais alguma ajuda ou quiser ajustar algo, fique à vontade para perguntar.
+
 
