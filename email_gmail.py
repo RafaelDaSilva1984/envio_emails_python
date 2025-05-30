@@ -8,13 +8,14 @@ import locale
 import re
 import mimetypes
 
-# Define localidade para datas em português
+
+# Configura o locale para datas em português
 try:
     locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
 except:
     locale.setlocale(locale.LC_TIME, 'portuguese')
 
-# Saudação de acordo com a hora do dia
+# Saudação baseada na hora do dia
 def saudacao_do_dia():
     hora = datetime.datetime.now().hour
     if 5 <= hora < 12:
@@ -26,9 +27,9 @@ def saudacao_do_dia():
 
 # Função para enviar o e-mail
 def enviar_email():
-    email_destino = entry_email.get()
-    assunto = entry_assunto.get()
-    caminho_arquivo = entry_arquivo.get()
+    email_destino = entry_email.get().strip()
+    assunto = entry_assunto.get().strip()
+    caminho_arquivo = entry_arquivo.get().strip()
 
     if not re.match(r"[^@]+@[^@]+\.[^@]+", email_destino):
         messagebox.showerror("Erro", "E-mail inválido.")
@@ -38,64 +39,81 @@ def enviar_email():
         messagebox.showerror("Erro", "Arquivo não encontrado.")
         return
 
-    caminho_imagem = 'C:/Cursos_Python/envio_email_automatico/Email Automatico/envio_emails_python/background.png'
-    if not os.path.exists(caminho_imagem):
-        messagebox.showerror("Erro", "Imagem para e-mail não encontrada.")
-        return
-    
+    # CIDs e caminhos das imagens inline
+    imagens = {
+        'logo_python': 'C:/Cursos_Python/envio_email_automatico/Email Automatico/envio_emails_python/background.png',
+        'logo_linkedin': 'C:/Cursos_Python/envio_email_automatico/Email Automatico/envio_emails_python/linkedin.png',
+        'logo_github': 'C:/Cursos_Python/envio_email_automatico/Email Automatico/envio_emails_python/github.png',
+        'logo_watsapp': 'C:/Cursos_Python/envio_email_automatico/Email Automatico/envio_emails_python/whatsapp.png'
+    }
 
+    # Verificação de existência das imagens
+    for cid, caminho in imagens.items():
+        if not os.path.exists(caminho):
+            messagebox.showerror("Erro", f"Imagem '{cid}' não encontrada.")
+            return
 
     data_formatada = datetime.datetime.now().strftime("%d de %B de %Y")
     saudacao = saudacao_do_dia()
 
-    # Corpo HTML com imagem inline
+    # Corpo HTML
     html = f'''
     <html>
       <body style="font-family: Arial; padding: 10px;">
         <h3>{saudacao}, tudo bem?</h3>
         <p>Segue em anexo o meu currículo atualizado.</p>
         <p>Enviado automaticamente em {data_formatada}.</p>
-        <br>
-        <img src="cid:logo_python" alt="Python Logo" style="width: 50px; height: auto;">
-        <p style="font-size: 12px; color: gray;">Este e-mail foi gerado com Python</p>   
-        </a>
+        <br>          
+        <img src="cid:logo_linkedin" alt="LinkedIn Logo" style="width: 20px; height: auto;">
+             <a href="https://www.linkedin.com/in/rafael-da-silva-rfs-desenvolvedor/" target="_blank">LinkedIn</a>    
+             <br><br>    
+        <img src="cid:logo_github" alt="GitHub Logo" style="width: 20px; height: auto;"> 
+            <a href="https://github.com/RafaelDaSilva1984" target="_blank">Github</a>    
+             <br><br>    
+       <img src="cid:logo_watsapp" alt="WhatsApp Logo" style="width: 20px; height: auto;" <p style="font-size: 12px; color: gray;">
+                Entre em contato comigo pelo WhatsApp - (54)9-9677-2904</p>        
+             <!--<a href="https://api.whatsapp.com/send?phone=5511111111111" target="_blank">WhatsApp</a> -->
+             <br><br>
+       <img src="cid:logo_python" alt="Python Logo" style="width: 50px; height: auto;">
+            <p style="font-size: 12px; color: gray;">Este e-mail foi gerado com Python</p>
     </html>
     '''
 
+    # Criação da mensagem
     msg = EmailMessage()
     msg['Subject'] = assunto
-    msg['From'] = 'rf@gmail.com'
+    msg['From'] = 'raffa@gmail.com'
     msg['To'] = email_destino
-    msg.set_content("Segue o currículo em anexo.\n\nAtenciosamente,\nRafael Da Silva")
+    msg.set_content("Segue o currículo em anexo.\n\nAtenciosamente,\nRafael")
     msg.add_alternative(html, subtype='html')
 
-    # Anexar currículo PDF
+    # Anexar PDF
     with open(caminho_arquivo, 'rb') as f:
         msg.add_attachment(f.read(), maintype='application', subtype='pdf', filename=os.path.basename(caminho_arquivo))
 
-    # Anexar imagem inline
-    with open(caminho_imagem, 'rb') as img:
-        img_data = img.read()
-        maintype, subtype = mimetypes.guess_type(caminho_imagem)[0].split('/')
-        msg.get_payload()[1].add_related(img_data, maintype=maintype, subtype=subtype, cid='logo_python')
+    # Adicionar imagens inline
+    for cid, caminho in imagens.items():
+        with open(caminho, 'rb') as img:
+            img_data = img.read()
+            maintype, subtype = mimetypes.guess_type(caminho)[0].split('/')
+            msg.get_payload()[1].add_related(img_data, maintype=maintype, subtype=subtype, cid=cid)
 
-
-    # Envio do e-mail
+    # Enviar o e-mail
     try:
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-            smtp.login('rf@gmail.com', '*******************')  
+            smtp.login('raffa@gmail.com', '**** **** **** ****')  #IMPORTANTE: use app password
             smtp.send_message(msg)
             messagebox.showinfo("Sucesso", "E-mail enviado com sucesso!")
     except Exception as e:
         messagebox.showerror("Erro", f"Erro ao enviar e-mail:\n{e}")
 
-# Função para selecionar o PDF
+# Função para escolher o arquivo
 def selecionar_arquivo():
     caminho = filedialog.askopenfilename(filetypes=[("PDF files", "*.pdf")])
     entry_arquivo.delete(0, tk.END)
     entry_arquivo.insert(0, caminho)
 
-# Interface Gráfica
+# Interface gráfica
 janela = tk.Tk()
 janela.title("Envio de Currículo por E-mail")
 janela.geometry("500x250")
